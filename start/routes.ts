@@ -21,7 +21,7 @@
 import Route from '@ioc:Adonis/Core/Route'
 
 const favoritos = [
-  { id: 1, nome: 'google', url: 'http://www.google.com', importante: true },
+  { id: 1, nome: 'IFRN', url: 'http://www.google.com', importante: true },
   { id: 2, nome: 'google', url: 'http://www.google.com', importante: true },
 ]
 
@@ -55,4 +55,22 @@ Route.post('/favoritos', async ({ request, response }) => {
     return response.status(400).send(newFavorito)
   }
   return response.status(201).send(newFavorito)
+})
+
+Route.delete('/favoritos', async ({ request, response }) => {
+  const { nome } = request.body()
+  const favoritoApagar = { nome }
+
+  // const index = favoritos.indexOf()
+  // favoritos.splice(index)
+  // console.log(index)
+  function buscarObjetoPorPropriedade(array, propriedade, valor) {
+    return array.find((objeto) => objeto[propriedade] === valor)
+  }
+
+  
+
+  // if (index > 0) {
+  //   response.status(204)
+  // }
 })
