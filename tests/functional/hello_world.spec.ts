@@ -6,4 +6,3 @@ test('display welcome page', async ({ client }) => {
   response.assertStatus(200)
   response.assertBodyContains({ hello: 'world' })
 })
-

@@ -51,5 +51,8 @@ Route.post('/favoritos', async ({ request, response }) => {
   const { nome, url, importante } = request.body()
   const newFavorito = { id: favoritos.length + 1, nome, url, importante }
   favoritos.push(newFavorito)
+  if (newFavorito.nome == null || newFavorito.nome == null || newFavorito.importante == null) {
+    return response.status(400).send(newFavorito)
+  }
   return response.status(201).send(newFavorito)
 })
