@@ -46,3 +46,10 @@ Route.get('/favoritos/:id', async ({ params, response }) => {
 Route.get('/favoritos/:nome', async ({ params }) => {
   return { id: 1, nome: params.nome, url: 'http://www.google.com', importante: true }
 })
+
+Route.post('/favoritos', async ({ request, response }) => {
+  const { nome, url, importante } = request.body()
+  const newFavorito = { id: favoritos.length + 1, nome, url, importante }
+  favoritos.push(newFavorito)
+  return response.status(201).send(newFavorito)
+})
