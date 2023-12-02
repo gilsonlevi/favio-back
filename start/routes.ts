@@ -21,8 +21,9 @@
 import Route from '@ioc:Adonis/Core/Route'
 
 const favoritos = [
-  { id: 1, nome: 'IFRN', url: 'http://www.google.com', importante: true },
+  { id: 1, nome: 'IFRN', url: 'http://www.ifrn.com', importante: true },
   { id: 2, nome: 'google', url: 'http://www.google.com', importante: true },
+  { id: 3, nome: 'uol', url: 'http://www.uol.com', importante: true },
 ]
 
 Route.get('/', async () => {
@@ -30,9 +31,10 @@ Route.get('/', async () => {
 })
 
 Route.get('/favoritos', async () => {
-  return [{ id: 1, nome: 'google', url: 'http://www.google.com', importante: true }]
+  return favoritos
 })
 
+// Metodo GET para buscar favoritos pelo ID
 Route.get('/favoritos/:id', async ({ params, response }) => {
   // console.log(array)
   // array.map((e)=>console.log(e.id))
@@ -47,6 +49,7 @@ Route.get('/favoritos/:nome', async ({ params }) => {
   return { id: 1, nome: params.nome, url: 'http://www.google.com', importante: true }
 })
 
+// Metodo POST para criar favorito
 Route.post('/favoritos', async ({ request, response }) => {
   const { nome, url, importante } = request.body()
   const newFavorito = { id: favoritos.length + 1, nome, url, importante }
@@ -59,18 +62,29 @@ Route.post('/favoritos', async ({ request, response }) => {
 
 Route.delete('/favoritos', async ({ request, response }) => {
   const { nome } = request.body()
-  const favoritoApagar = { nome }
 
-  // const index = favoritos.indexOf()
-  // favoritos.splice(index)
-  // console.log(index)
-  function buscarObjetoPorPropriedade(array, propriedade, valor) {
-    return array.find((objeto) => objeto[propriedade] === valor)
+  favoritos.forEach(element => {
+    if (element.nome == nome) {
+      let found = favoritos.indexOf(element)
+      favoritos.splice(found, 0)
+      response.status(204)
+    }
+  });
+})
+
+Route.put('/favoritos/:id', async ({ params, request, response }) => {
+  const { nome, url, importante } = request.body()
+
+  const found = favoritos.find((favorito) => favorito.id == params.id)
+  if(found == undefined) {
+    response.status(404)
+  }else {
+    favoritos[found.id - 1].nome = nome
+    favoritos[found.id - 1].url = url
+    favoritos[found.id - 1].importante = importante
+    response.status(201)
   }
 
-  
-
-  // if (index > 0) {
-  //   response.status(204)
-  // }
 })
+
+
