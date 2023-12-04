@@ -77,7 +77,6 @@ Route.put('/favoritos/:id', async ({ params, request, response }) => {
     }
     response.status(201).send(favoritos[found.id - 1])
   }
-
 })
 
 
