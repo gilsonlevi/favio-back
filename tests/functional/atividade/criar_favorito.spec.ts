@@ -15,4 +15,10 @@ test.group('Criar favorito', () => {
       .json({ url: 'www.ifrn.edu.br', importante: false })
     resposta.assertStatus(400)
   })
+  test('criar favorito que já existe', async ({ client }) => {
+    const resposta = await client
+      .post('/favoritos')
+      .json({ nome: 'IFRN', url: 'http://www.ifrn.com.br', importante: false })
+    resposta.assertStatus(400)
+  })
 })
