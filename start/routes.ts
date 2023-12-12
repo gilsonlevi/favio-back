@@ -51,15 +51,24 @@ Route.post('/favoritos', async ({ request, response }) => {
 Route.delete('/favoritos', async ({ request, response }) => {
   const { nome } = request.body()
 
-  favoritos.forEach((element) => {
-    if (element.nome == nome) {
-      let found = favoritos.indexOf(element)
-      favoritos.splice(found)
-      response.status(204)
-    } else {
-      response.status(404)
-    }
-  })
+  const found = favoritos.findIndex((favorito) => favorito.nome == nome )
+
+  if (found !== -1) {
+    favoritos.splice(found, 1);
+    response.status(204)
+  } else {
+    response.status(404)
+  }
+
+  // favoritos.forEach((element) => {
+  //   if (element.nome == nome) {
+  //     let found = favoritos.indexOf(element)
+  //     favoritos.splice(found)
+  //     response.status(204)
+  //   } else {
+  //     response.status(404)
+  //   }
+  // })
 })
 
 Route.put('/favoritos/:id', async ({ params, request, response }) => {
