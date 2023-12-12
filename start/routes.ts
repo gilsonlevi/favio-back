@@ -1,6 +1,5 @@
 // ROTAS
 import Route from '@ioc:Adonis/Core/Route'
-import { retrieveSourceMap } from 'source-map-support'
 
 // Array de favoritos
 let favoritos = [
@@ -12,8 +11,6 @@ let favoritos = [
   { id: 6, nome: 'FUNCERN', url: 'http://www.funcern.com.br', importante: true },
   { id: 7, nome: 'FLAMENGO', url: 'http://www.flamengo.com.br', importante: true },
 ]
-
-console.log("Tamanho do array", favoritos.length)
 
 // Rota padrão
 Route.get('/', async () => {
@@ -41,8 +38,6 @@ Route.post('/favoritos', async ({ request, response }) => {
   const newFavorito = { id: favoritos.length + 1, nome, url, importante }
 
   const found = favoritos.find((favorito) => favorito.nome == nome && favorito.url == url)
-  console.log('Favorito encontrado', found)
-
   if (newFavorito.nome == null || newFavorito.url == null) {
     return response.status(400).send(newFavorito)
   } else if (found !== undefined) {
@@ -58,13 +53,8 @@ Route.delete('/favoritos', async ({ request, response }) => {
 
   favoritos.forEach((element) => {
     if (element.nome == nome) {
-      console.log("Favorito encontrado", element)
       let found = favoritos.indexOf(element)
-      console.log(found)
-      console.log('Favorito antes de ser excluido',favoritos[found] ) 
-      favoritos.splice(found, 1)
-      console.log('Favorito depois de ser excluido',favoritos[found] ) 
-
+      favoritos.splice(found)
       response.status(204)
     } else {
       response.status(404)
