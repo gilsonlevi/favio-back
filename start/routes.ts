@@ -1,12 +1,19 @@
 // ROTAS
 import Route from '@ioc:Adonis/Core/Route'
+import { retrieveSourceMap } from 'source-map-support'
 
 // Array de favoritos
-const favoritos = [
+let favoritos = [
   { id: 1, nome: 'IFRN', url: 'http://www.ifrn.com.br', importante: true },
   { id: 2, nome: 'GOOGLE', url: 'http://www.google.com.br', importante: true },
   { id: 3, nome: 'UOL', url: 'http://www.uol.com.br', importante: true },
+  { id: 4, nome: 'CNN', url: 'http://www.cnn.com.br', importante: true },
+  { id: 5, nome: 'UFRN', url: 'http://www.ufrn.com.br', importante: true },
+  { id: 6, nome: 'FUNCERN', url: 'http://www.funcern.com.br', importante: true },
+  { id: 7, nome: 'FLAMENGO', url: 'http://www.flamengo.com.br', importante: true },
 ]
+
+console.log("Tamanho do array", favoritos.length)
 
 // Rota padrão
 Route.get('/', async () => {
@@ -23,13 +30,9 @@ Route.get('/favoritos/:id', async ({ params, response }) => {
   const found = favoritos.find((favorito) => favorito.id == params.id)
   if (found == undefined) {
     return response.status(404).send({})
+  }else {
+    return response.status(200).send(found)
   }
-  return found
-})
-
-// Metodo GET para buscar favoritos pelo nome
-Route.get('/favoritos/:nome', async ({ params }) => {
-  return { id: 1, nome: params.nome, url: 'http://www.google.com', importante: true }
 })
 
 // Metodo POST para criar favorito
@@ -55,8 +58,13 @@ Route.delete('/favoritos', async ({ request, response }) => {
 
   favoritos.forEach((element) => {
     if (element.nome == nome) {
+      console.log("Favorito encontrado", element)
       let found = favoritos.indexOf(element)
-      favoritos.splice(found, 0)
+      console.log(found)
+      console.log('Favorito antes de ser excluido',favoritos[found] ) 
+      favoritos.splice(found, 1)
+      console.log('Favorito depois de ser excluido',favoritos[found] ) 
+
       response.status(204)
     } else {
       response.status(404)

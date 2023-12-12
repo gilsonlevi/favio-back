@@ -4,9 +4,9 @@ test.group('Criar favoritos', () => {
   test('criar favorito', async ({ client }) => {
     const respota = await client
       .post('/favoritos')
-      .json({ nome: 'IFRN', url: 'www.ifrn.edu.br', importante: false })
+      .json({ nome: 'OBMEP', url: 'www.obmep.com.br', importante: false })
     respota.assertStatus(201)
-    respota.assertBodyContains({ nome: 'IFRN' })
+    respota.assertBodyContains({ nome: 'OBMEP' })
   })
   test('criar favorito com campo faltante', async ({ client }) => {
     const resposta = await client
