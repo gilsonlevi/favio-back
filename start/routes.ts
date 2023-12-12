@@ -27,7 +27,7 @@ Route.get('/favoritos/:id', async ({ params, response }) => {
   const found = favoritos.find((favorito) => favorito.id == params.id)
   if (found == undefined) {
     return response.status(404).send({})
-  }else {
+  } else {
     return response.status(200).send(found)
   }
 })
@@ -51,7 +51,7 @@ Route.post('/favoritos', async ({ request, response }) => {
 Route.delete('/favoritos', async ({ request, response }) => {
   const { nome } = request.body()
 
-  const found = favoritos.findIndex((favorito) => favorito.nome == nome )
+  const found = favoritos.findIndex((favorito) => favorito.nome == nome)
 
   if (found !== -1) {
     favoritos.splice(found, 1);
@@ -78,16 +78,22 @@ Route.put('/favoritos/:id', async ({ params, request, response }) => {
   if (found == undefined) {
     response.status(404)
   } else {
-    if (nome !== undefined) {
-      favoritos[found.id - 1].nome = nome
+
+    const encontrar = favoritos.find((favorito) => favorito.nome == nome && favorito.url == url )
+    if(encontrar == undefined){
+      if (nome !== undefined) {
+        favoritos[found.id - 1].nome = nome
+      }
+      if (url !== undefined) {
+        favoritos[found.id - 1].url = url
+      }
+      if (importante !== undefined) {
+        favoritos[found.id - 1].importante = importante
+      }
+      response.status(201).send(favoritos[found.id - 1])
+    }else {
+      response.status(404)
     }
-    if (url !== undefined) {
-      favoritos[found.id - 1].url = url
-    }
-    if (importante !== undefined) {
-      favoritos[found.id - 1].importante = importante
-    }
-    response.status(201).send(favoritos[found.id - 1])
   }
 })
 

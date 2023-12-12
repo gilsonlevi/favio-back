@@ -16,4 +16,10 @@ test.group('Atualizar favorito', () => {
     resposta.assertStatus(201)
     resposta.assertBodyContains({id: 3, nome: 'SGA', url: 'http://www.uol.com.br', importante: true })
   })
+
+  test('atualizando favorito com os mesmos nomes de outro favorito', async ({client}) => {
+    const resposta = await client.put('favoritos/4').json({nome: 'UFRN', url: 'http://www.ufrn.com.br', importante: true})
+    resposta.assertStatus(404)
+  })
+
 })
