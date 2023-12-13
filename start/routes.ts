@@ -54,21 +54,11 @@ Route.delete('/favoritos', async ({ request, response }) => {
   const found = favoritos.findIndex((favorito) => favorito.nome == nome)
 
   if (found !== -1) {
-    favoritos.splice(found, 1);
+    favoritos.splice(found, 1)
     response.status(204)
   } else {
     response.status(404)
   }
-
-  // favoritos.forEach((element) => {
-  //   if (element.nome == nome) {
-  //     let found = favoritos.indexOf(element)
-  //     favoritos.splice(found)
-  //     response.status(204)
-  //   } else {
-  //     response.status(404)
-  //   }
-  // })
 })
 
 Route.put('/favoritos/:id', async ({ params, request, response }) => {
@@ -78,9 +68,8 @@ Route.put('/favoritos/:id', async ({ params, request, response }) => {
   if (found == undefined) {
     response.status(404)
   } else {
-
-    const encontrar = favoritos.find((favorito) => favorito.nome == nome && favorito.url == url )
-    if(encontrar == undefined){
+    const encontrar = favoritos.find((favorito) => favorito.nome == nome && favorito.url == url)
+    if (encontrar == undefined) {
       if (nome !== undefined) {
         favoritos[found.id - 1].nome = nome
       }
@@ -91,7 +80,7 @@ Route.put('/favoritos/:id', async ({ params, request, response }) => {
         favoritos[found.id - 1].importante = importante
       }
       response.status(201).send(favoritos[found.id - 1])
-    }else {
+    } else {
       response.status(404)
     }
   }
