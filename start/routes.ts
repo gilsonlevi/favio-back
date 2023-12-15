@@ -48,10 +48,8 @@ Route.post('/favoritos', async ({ request, response }) => {
   }
 })
 
-Route.delete('/favoritos', async ({ request, response }) => {
-  const { nome } = request.body()
-
-  const found = favoritos.findIndex((favorito) => favorito.nome == nome)
+Route.delete('/favoritos/:id', async ({ params, response }) => {
+  const found = favoritos.findIndex((favorito) => favorito.id == params.id)
 
   if (found !== -1) {
     favoritos.splice(found, 1)

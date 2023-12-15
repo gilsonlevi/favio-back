@@ -33,7 +33,39 @@ export default class FavoritosController {
     }
   }
 
-  public async update({}: HttpContextContract) {}
+  public async update({ request, response, params }: HttpContextContract) {
+    const { nome, url, importante } = request.body()
 
-  public async destroy({}: HttpContextContract) {}
+    const found = favoritos.find((favorito) => favorito.id == params.id)
+    if (found == undefined) {
+      response.status(404)
+    } else {
+      const encontrar = favoritos.find((favorito) => favorito.nome == nome && favorito.url == url)
+      if (encontrar == undefined) {
+        if (nome !== undefined) {
+          favoritos[found.id - 1].nome = nome
+        }
+        if (url !== undefined) {
+          favoritos[found.id - 1].url = url
+        }
+        if (importante !== undefined) {
+          favoritos[found.id - 1].importante = importante
+        }
+        response.status(201).send(favoritos[found.id - 1])
+      } else {
+        response.status(404)
+      }
+    }
+  }
+
+  public async destroy({ params, response }: HttpContextContract) {
+    const found = favoritos.findIndex((favorito) => favorito.id == params.id)
+
+    if (found !== -1) {
+      favoritos.splice(found, 1)
+      response.status(204)
+    } else {
+      response.status(404)
+    }
+  }
 }
