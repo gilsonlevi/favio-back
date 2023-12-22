@@ -13,9 +13,10 @@ let favoritos = [
 ]
 
 // Rota padrão
-Route.get('/', async () => {
-  return { hello: 'world' }
+Route.get('/', async ({ view }) => {
+  return view.render('home')
 })
+
 
 // Rota para pegar todos os favoritos
 Route.get('/favoritos', async () => {
