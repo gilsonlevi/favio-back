@@ -4,15 +4,15 @@ import { BaseModel, column } from '@ioc:Adonis/Lucid/Orm'
 export default class User extends BaseModel {
   @column({ isPrimary: true })
   public id: number
-  
-  @column()
-  public nome:string
 
   @column()
-  public cpf:string
+  public nome: string
 
   @column()
-  public senha:string
+  public cpf: string
+
+  @column()
+  public senha: string
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime

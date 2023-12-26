@@ -6,13 +6,13 @@ export default class Favorito extends BaseModel {
   public id: number
 
   @column()
-  public nome:string
+  public nome: string
 
   @column()
-  public url:string
+  public url: string
 
   @column()
-  public importante:boolean
+  public importante: boolean
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime

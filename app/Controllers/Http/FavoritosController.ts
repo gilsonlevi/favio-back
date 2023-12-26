@@ -3,17 +3,16 @@ import Favorito from 'App/Models/Favorito'
 import { DateTime } from 'luxon'
 
 export default class FavoritosController {
-  
   public async index({}: HttpContextContract) {
     return Favorito.all()
   }
 
   public async store({ request, response }: HttpContextContract) {
     const { nome, url, importante } = request.body()
-    if(nome == undefined || url == undefined || importante == undefined){
+    if (nome == undefined || url == undefined || importante == undefined) {
       return response.status(400)
     } else {
-      const favorito = {nome, url, importante}
+      const favorito = { nome, url, importante }
       Favorito.create(favorito)
       return response.status(201).send(favorito)
     }
@@ -21,34 +20,34 @@ export default class FavoritosController {
 
   public async show({ params, response }: HttpContextContract) {
     const favoritoEncontrado = await Favorito.findByOrFail('id', params.id)
-    if (favoritoEncontrado == undefined){
+    if (favoritoEncontrado == undefined) {
       return response.status(404)
-    }else {
+    } else {
       return response.status(201).send(favoritoEncontrado)
     }
   }
 
   public async update({ request, response, params }: HttpContextContract) {
-    const {nome, url, importante}= request.body()
+    const { nome, url, importante } = request.body()
     const favoritoEncontrado = await Favorito.findByOrFail('id', params.id)
-    if (!favoritoEncontrado){
+    if (!favoritoEncontrado) {
       return response.status(404)
-    }else {
-      favoritoEncontrado.nome=nome
-      favoritoEncontrado.url=url
-      favoritoEncontrado.importante=importante
+    } else {
+      favoritoEncontrado.nome = nome
+      favoritoEncontrado.url = url
+      favoritoEncontrado.importante = importante
     }
 
     await favoritoEncontrado.save()
-    await favoritoEncontrado.merge({updatedAt:DateTime.local()}).save()
+    await favoritoEncontrado.merge({ updatedAt: DateTime.local() }).save()
     return response.status(200).send(favoritoEncontrado)
   }
 
   public async destroy({ params, response }: HttpContextContract) {
     const favoritoEncontrado = await Favorito.findByOrFail('id', params.id)
-    if (!favoritoEncontrado){
-      return response.status(400);
-    }else {
+    if (!favoritoEncontrado) {
+      return response.status(400)
+    } else {
       favoritoEncontrado.delete()
       return response.status(204)
     }
