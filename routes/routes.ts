@@ -12,7 +12,8 @@ let favoritos = [
   { id: 7, nome: 'FLAMENGO', url: 'http://www.flamengo.com.br', importante: true },
 ]
 
-// Rota padrão
+Route.group(() => {
+  // Rota padrão
 Route.get('/', async ({ view }) => {
   return view.render('home')
 })
@@ -86,3 +87,9 @@ Route.put('/favoritos/:id', async ({ params, request, response }) => {
 })
 
 Route.resource('favoritao', 'FavoritosController').apiOnly()
+
+Route.resource('user', 'UsersController').apiOnly()
+
+})
+
+
