@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+<div id="area">
+
+</div>
+</body>
+<script>
+  let area=document.querySelector('#area')
+  fetch('http://127.0.0.1:3030/favoritos',{
+    mode: 'no-cors',
+    headers: {
+      'Content-Type': 'application/json'
+    }})
+  .then(response => response.json())
+  .then(data => {
+    console.log('data',data)
+    data.forEach(
+    console.log(area.id),
+    area.innerHTML(`<p>${data.nome}</p>`),
+    area.innerHTML(`<p>${data.url}</p>`)
+    )
+  })
+  .catch(error => {
+    console.log('erroe', error)// handle error
+  });
+</script>
+</html>
+

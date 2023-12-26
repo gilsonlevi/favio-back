@@ -14,82 +14,78 @@ let favoritos = [
 
 Route.group(() => {
   // Rota padrão
-Route.get('/', async ({ view }) => {
-  return view.render('home')
-})
+  Route.get('/', async ({ view }) => {
+    return view.render('home')
+  })
 
+  // Rota para pegar todos os favoritos
+  Route.get('/favoritos', async () => {
+    return favoritos
+  })
 
-// Rota para pegar todos os favoritos
-Route.get('/favoritos', async () => {
-  return favoritos
-})
+  // Metodo GET para buscar favoritos pelo ID
+  Route.get('/favoritos/:id', async ({ params, response }) => {
+    const found = favoritos.find((favorito) => favorito.id == params.id)
+    if (found == undefined) {
+      return response.status(404).send({})
+    } else {
+      return response.status(200).send(found)
+    }
+  })
 
-// Metodo GET para buscar favoritos pelo ID
-Route.get('/favoritos/:id', async ({ params, response }) => {
-  const found = favoritos.find((favorito) => favorito.id == params.id)
-  if (found == undefined) {
-    return response.status(404).send({})
-  } else {
-    return response.status(200).send(found)
-  }
-})
+  // Metodo POST para criar favorito
+  Route.post('/favoritos', async ({ request, response }) => {
+    const { nome, url, importante } = request.body()
+    const newFavorito = { id: favoritos.length + 1, nome, url, importante }
 
-// Metodo POST para criar favorito
-Route.post('/favoritos', async ({ request, response }) => {
-  const { nome, url, importante } = request.body()
-  const newFavorito = { id: favoritos.length + 1, nome, url, importante }
+    const found = favoritos.find((favorito) => favorito.nome == nome && favorito.url == url)
+    if (newFavorito.nome == null || newFavorito.url == null) {
+      return response.status(400).send(newFavorito)
+    } else if (found !== undefined) {
+      return response.status(400)
+    } else {
+      favoritos.push(newFavorito)
+      return response.status(201).send(newFavorito)
+    }
+  })
 
-  const found = favoritos.find((favorito) => favorito.nome == nome && favorito.url == url)
-  if (newFavorito.nome == null || newFavorito.url == null) {
-    return response.status(400).send(newFavorito)
-  } else if (found !== undefined) {
-    return response.status(400)
-  } else {
-    favoritos.push(newFavorito)
-    return response.status(201).send(newFavorito)
-  }
-})
+  Route.delete('/favoritos/:id', async ({ params, response }) => {
+    const found = favoritos.findIndex((favorito) => favorito.id == params.id)
 
-Route.delete('/favoritos/:id', async ({ params, response }) => {
-  const found = favoritos.findIndex((favorito) => favorito.id == params.id)
-
-  if (found !== -1) {
-    favoritos.splice(found, 1)
-    response.status(204)
-  } else {
-    response.status(404)
-  }
-})
-
-Route.put('/favoritos/:id', async ({ params, request, response }) => {
-  const { nome, url, importante } = request.body()
-
-  const found = favoritos.find((favorito) => favorito.id == params.id)
-  if (found == undefined) {
-    response.status(404)
-  } else {
-    const encontrar = favoritos.find((favorito) => favorito.nome == nome && favorito.url == url)
-    if (encontrar == undefined) {
-      if (nome !== undefined) {
-        favoritos[found.id - 1].nome = nome
-      }
-      if (url !== undefined) {
-        favoritos[found.id - 1].url = url
-      }
-      if (importante !== undefined) {
-        favoritos[found.id - 1].importante = importante
-      }
-      response.status(201).send(favoritos[found.id - 1])
+    if (found !== -1) {
+      favoritos.splice(found, 1)
+      response.status(204)
     } else {
       response.status(404)
     }
-  }
+  })
+
+  Route.put('/favoritos/:id', async ({ params, request, response }) => {
+    const { nome, url, importante } = request.body()
+
+    const found = favoritos.find((favorito) => favorito.id == params.id)
+    if (found == undefined) {
+      response.status(404)
+    } else {
+      const encontrar = favoritos.find((favorito) => favorito.nome == nome && favorito.url == url)
+      if (encontrar == undefined) {
+        if (nome !== undefined) {
+          favoritos[found.id - 1].nome = nome
+        }
+        if (url !== undefined) {
+          favoritos[found.id - 1].url = url
+        }
+        if (importante !== undefined) {
+          favoritos[found.id - 1].importante = importante
+        }
+        response.status(201).send(favoritos[found.id - 1])
+      } else {
+        response.status(404)
+      }
+    }
+  })
+
+  Route.resource('favoritao', 'FavoritosController').apiOnly()
+
+  Route.resource('user', 'UsersController').apiOnly()
 })
-
-Route.resource('favoritao', 'FavoritosController').apiOnly()
-
-Route.resource('user', 'UsersController').apiOnly()
-
-})
-
-
