@@ -1,6 +1,7 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Favorito from 'App/Models/Favorito'
 import { DateTime } from 'luxon'
+const teste = ""
 
 export default class FavoritosController {
   public async index({}: HttpContextContract) {
@@ -9,7 +10,8 @@ export default class FavoritosController {
 
   public async store({ request, response }: HttpContextContract) {
     const { nome, url, importante } = request.body()
-    if (nome == undefined || url == undefined || importante == undefined) {
+
+    if (nome === teste || url === teste || importante === undefined) {
       return response.status(400)
     } else {
       const favorito = { nome, url, importante }
