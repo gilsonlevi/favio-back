@@ -1,6 +1,12 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import User from 'App/Models/User'
+import { md5 } from 'js-md5'
 import { DateTime } from 'luxon'
+
+function criptografarSenha(senha) {
+  const senhaEncripitada = md5(senha)
+  return senhaEncripitada
+}
 
 export default class UsersController {
   public async index({}: HttpContextContract) {
@@ -13,6 +19,7 @@ export default class UsersController {
       return response.status(400)
     } else {
       const newUser = { nome, cpf, senha }
+      newUser.senha = criptografarSenha(senha)
       User.create(newUser)
       return response.status(201).send(newUser)
     }
