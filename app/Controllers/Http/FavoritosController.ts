@@ -10,7 +10,7 @@ export default class FavoritosController {
 
   public async store({ request, response }: HttpContextContract) {
     const { nome, url, importante } = request.body()
-
+    console.log(request.completeUrl())
     if (nome === stringVazia || url === stringVazia || importante === undefined) {
       return response.status(400)
     } else {
