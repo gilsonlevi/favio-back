@@ -3,11 +3,6 @@ import User from 'App/Models/User'
 import { md5 } from 'js-md5'
 import { DateTime } from 'luxon'
 
-function criptografarSenha(senha) {
-  const senhaEncripitada = md5(senha)
-  return senhaEncripitada
-}
-
 export default class UsersController {
   public async index({}: HttpContextContract) {
     return User.all()
@@ -19,7 +14,8 @@ export default class UsersController {
       return response.status(400)
     } else {
       const newUser = { nome, cpf, senha }
-      newUser.senha = criptografarSenha(senha)
+      const newPassword = md5(senha)
+      newUser.senha(newPassword)
       User.create(newUser)
       return response.status(201).send(newUser)
     }
